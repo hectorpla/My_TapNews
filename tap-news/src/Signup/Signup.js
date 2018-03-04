@@ -23,11 +23,14 @@ class Signup extends React.Component {
         const which = e.target.name;
         this.setState({[which]: e.target.value});
 
+        // weird behavior: error delayed, 
+        // {password: 'a', confirm_password: ''} => no error
+        // {password: 'a', confirm_password: 'a'} => error
+
         const {errors} = this.state;
         if (this.state.password !== this.state.confirm_password) {
             errors.password = "Password Mismatched!";
         } else {
-            // delete this.state.errors.password;
             errors.password = "";
         }
         this.setState({errors: this.state.errors});
