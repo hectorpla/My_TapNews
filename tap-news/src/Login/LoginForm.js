@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-function loginForm({
+function LoginForm({
     onSubmit,
     onChange,
-    user,
+    errors,
 }) {
     return (
         <div className="sign-in-card row">
@@ -12,18 +12,21 @@ function loginForm({
             <div className="row title"> Login </div>
             <div className="input-field row">
               <label for="email" />
-              <input id="email" type="text" className="validate" placeholder="email" />
+              <input id="email" type="text" name="email" className="validate" placeholder="email" 
+                onChange={onChange} />
             </div>
             <div className="input-field row">
               <label for="password" />
-              <input id="password" type="password" />
+              <input id="password" name="password" type="password" onChange={onChange} />
             </div>
             <div className="row">
-              <a className="waves-effect btn float-right"> login </a>
+              <a className="waves-effect btn float-right" onClick={onSubmit}> 
+                login
+              </a>
             </div>
             <div className="row">
               <p className="float-right"> 
-                New here? <a href="#"> Sign Up </a> 
+                New here? <a href="#" > Sign Up </a> 
               </p>
             </div>
           </form>
@@ -31,10 +34,10 @@ function loginForm({
     );
 }
 
-loginForm.propTypes = {
+LoginForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
-    user: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
 }
 
-export default loginForm;
+export default LoginForm;

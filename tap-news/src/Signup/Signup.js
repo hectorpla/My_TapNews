@@ -16,24 +16,28 @@ class Signup extends React.Component {
 
     onSubmit(e) {
         alert(JSON.stringify(this.state));
+
+        // TODO: POST credential info to the server
     }
 
     onChange(e) {
         // console.log(this.state);
-        const which = e.target.name;
-        this.setState({[which]: e.target.value});
-
-        // weird behavior: error delayed, 
-        // {password: 'a', confirm_password: ''} => no error
-        // {password: 'a', confirm_password: 'a'} => error
+        const which_field = e.target.name;
+        // this.setState({[which]: e.target.value}); // problematic to setState twice
+        const other_field = which_field == 'password' ? 
+            'confirm_passowrd' : 'password';
+        const new_val = e.target.value;
 
         const {errors} = this.state;
-        if (this.state.password !== this.state.confirm_password) {
+        if (new_val !== this.state[other_field]) {
             errors.password = "Password Mismatched!";
         } else {
             errors.password = "";
         }
-        this.setState({errors: this.state.errors});
+        this.setState({
+            errors: this.state.errors,
+            [which_field]: new_val
+        });
     }
 
     render() {

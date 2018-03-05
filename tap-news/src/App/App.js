@@ -1,4 +1,6 @@
 import 'materialize-css/dist/css/materialize.min.css';
+import 'materialize-css/dist/js/materialize.js';
+
 import './App.css';
 
 import React from 'react';
@@ -11,9 +13,9 @@ class App extends React.Component{
     render() {
         return (
             <div className="container">
-                <Signup />
-                {/* <Login />
-                <NewsPanel /> */}
+                {/* <Signup /> */}
+                <Login />
+                {/* <NewsPanel /> */}
             </div>
         )
     }
