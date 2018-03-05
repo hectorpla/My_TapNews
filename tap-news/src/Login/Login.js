@@ -28,7 +28,7 @@ class Login extends React.Component {
         return <LoginForm 
                     onChange={(e) => this.onChange(e)}
                     onSubmit={(e) => this.onSubmit(e)}
-                    errors={this.errors}
+                    errors={this.state.errors}
                 />
     }
 }

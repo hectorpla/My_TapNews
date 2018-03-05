@@ -15,7 +15,7 @@ class App extends React.Component{
             <div className="container">
                 {/* <Signup /> */}
                 <Login />
-                {/* <NewsPanel /> */}
+                <NewsPanel />
             </div>
         )
     }

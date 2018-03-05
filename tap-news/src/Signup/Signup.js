@@ -24,7 +24,7 @@ class Signup extends React.Component {
         // console.log(this.state);
         const which_field = e.target.name;
         // this.setState({[which]: e.target.value}); // problematic to setState twice
-        const other_field = which_field == 'password' ? 
+        const other_field = which_field === 'password' ? 
             'confirm_passowrd' : 'password';
         const new_val = e.target.value;
 
