@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 function SignupForm({
@@ -29,6 +30,11 @@ function SignupForm({
               <a className="waves-effect btn float-right" onClick={onSubmit}> 
                 Sign Up 
               </a>
+            </div>
+            <div className="row">
+              <p className="float-right"> 
+                have an acount? <Link to="/login"> log in </Link> 
+              </p>
             </div>
           </form>
         </div>

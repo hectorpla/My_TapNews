@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 function LoginForm({
@@ -26,7 +27,7 @@ function LoginForm({
             </div>
             <div className="row">
               <p className="float-right"> 
-                New here? <a href="#" > Sign Up </a> 
+                New here? <Link to="/signup"> Sign Up </Link> 
               </p>
             </div>
           </form>

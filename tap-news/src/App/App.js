@@ -13,8 +13,6 @@ class App extends React.Component{
     render() {
         return (
             <div className="container">
-                {/* <Signup /> */}
-                <Login />
                 <NewsPanel />
             </div>
         )
