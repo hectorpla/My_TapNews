@@ -1,17 +1,26 @@
-var path = require('path');
-var express = require('express')
+const path = require('path');
+const express = require('express')
 
-var index = require('./routes/index');
-var news = require('./routes/news')
+const index = require('./routes/index');
+const news = require('./routes/news');
+const auth = require('./routes/auth');
+const check_auth_middleware = require('./midlewares/check_auth');
+const logger = require('./logger');
 
-var logger = require('./logger');
-
-var app = express();
+const app = express();
 
 app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
+})
+
+// DB
+const mongoose = require('mongoose');
+mongoose.connect(require('./config/config.json').MongodbUrl);
+mongoose.connection.on('error', function(err) {
+  logger.error(err);
+  process.exit(1);
 })
 
 // view engine setup
@@ -24,10 +33,12 @@ app.set('view engine', 'jade');
 app.use('/static', express.static(path.join(__dirname, '../tap-news/build/static/')));
 
 app.use('/', index);
-app.use('/news', news);
+app.use('/news', check_auth_middleware, news);
+app.use('/auth', auth);
+
+
 
 logger.info('Server has been set up.');
-logger.warn('this is a warning message');
 logger.debug('a debug message')
 
 // catch 404 and forward to error handler
