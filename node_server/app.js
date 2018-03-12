@@ -4,7 +4,6 @@ const express = require('express')
 const index = require('./routes/index');
 const news = require('./routes/news');
 const auth = require('./routes/auth');
-const check_auth_middleware = require('./midlewares/check_auth');
 const logger = require('./utils/logger');
 
 const app = express();
@@ -36,13 +35,13 @@ app.set('view engine', 'jade');
 app.use('/static', express.static(path.join(__dirname, '../tap-news/build/static/')));
 
 app.use('/', index);
-app.use('/news', check_auth_middleware, news);
+app.use('/news', news);
 app.use('/auth', auth);
 
 
 
 logger.info('Server has been set up.');
-logger.debug('a debug message')
+// logger.debug('a debug message')
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

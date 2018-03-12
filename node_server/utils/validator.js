@@ -2,17 +2,18 @@ const isEmail = require('validator/lib/isEmail');
 
 const logger = require('../utils/logger');
 
+// TODO: more restriction like password length
 function validateUserInfo(user) {
     if (!user.email || !user.password) {
         return { 
             error: 'client side should specify email and password',
-            code: 100 
+            code: 201 
         }; // temparary code
     }
     if (!isEmail(user.email)) {
         return {
             error: 'not a email',
-            code: 102
+            code: 202
         };
     }
     return null;

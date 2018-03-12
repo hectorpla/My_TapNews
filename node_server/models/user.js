@@ -15,9 +15,9 @@ const userSchema = new mongoose.Schema({
 
 // var saltRounds = 3;
 
-userSchema.methods.comparedPassword = function(password, callback) {
+userSchema.methods.comparePassword = function(password) {
     // don't handle error here
-    return bcrypt.compare(password, this.password, callback);
+    return bcrypt.compare(password, this.password);
 };
 
 
@@ -28,10 +28,10 @@ userSchema.pre('save', function(next) {
 
     bcrypt.genSalt()
         .then(function(salt) {
-            logger.info(`salt ${salt} generated`);
+            logger.silly(`salt ${salt} generated`);
             bcrypt.hash(user.password, salt)
                 .then(function(hash) {
-                    logger.info(`user password ${user.password} hashed to ${hash}`)
+                    logger.silly(`user password ${user.password} hashed to ${hash}`)
                     // user.salt = salt;
                     user.password = hash;
                     next();

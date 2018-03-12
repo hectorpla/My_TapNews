@@ -1,5 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const bodyParser = require('body-parser').json();
+
+const check_auth = require('../midleware/check_auth');
+
 
 const news = [
     {
@@ -54,7 +58,9 @@ const news = [
     }
   ];
 
-router.get('/', function(req, res) {
+// TODO: check_auth temporarily put here; if there are more routes need authentication
+// put the check before all of them 
+router.post('/', bodyParser, check_auth, function(req, res) {
      res.json(news);
 })
 

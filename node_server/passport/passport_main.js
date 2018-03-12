@@ -1,5 +1,6 @@
 var passport = require('passport');
 var LocalSignUpStrategy = require('./signup_strategy');
+var LocalLogInStrategy = require('./login_strategy');
 
 module.exports = function (app) {
     app.use(passport.initialize());
@@ -14,5 +15,5 @@ module.exports = function (app) {
     })
 
     passport.use('local-signup', LocalSignUpStrategy);
-    // passport.use('local-login', LocalLogInStrategy);
+    passport.use('local-login', LocalLogInStrategy);
 }

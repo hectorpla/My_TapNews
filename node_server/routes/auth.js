@@ -8,20 +8,38 @@ const logger = require('../utils/logger');
 const bodyPaser = require('body-parser').json();
 var router = express.Router();
 
+// customized passport error handling
+router.post('/signup', bodyPaser, validator, function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info) {
+        if (err) { return next(err); }
+        if (!user) {
+            info.success = false;
+            return res.status(400).json(info); // return is neccesary
+        }
+        return res.json({ success: true, message: "you have signed up" })
+    })(req, res, next);
+});
 
-router.post('/signup', bodyPaser, validator,
-    passport.authenticate('local-signup'), 
-    function(req, res) {
-        // TODO: response with the information about whether signup was successfully
-        res.json({
-            message: "OK"
+
+router.post('/login', bodyPaser, function(req, res, next) {
+    passport.authenticate('local-login', function(err, user, info) {
+        logger.verbose('user loging in', req.body, req.user);
+
+        if (err) { return next(err); }
+        if (!user) {
+            info.success = false;
+            return res.status(400).json(info);
+        }
+        const token = user;
+        req.login(token, function(loginErr) {
+            if (loginErr) { return next(loginErr); }
+            return res.json({
+                    success: true,
+                    message: "you are logged in, keep your token",
+                    token
+            });
         })
-    }
-)
-
-
-router.post('/login', bodyPaser, function(req, res) {
-    logger.info('user log in', req.body);
-})
+    })(req, res, next);
+});
 
 module.exports = router;
