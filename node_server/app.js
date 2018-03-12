@@ -5,7 +5,7 @@ const index = require('./routes/index');
 const news = require('./routes/news');
 const auth = require('./routes/auth');
 const check_auth_middleware = require('./midlewares/check_auth');
-const logger = require('./logger');
+const logger = require('./utils/logger');
 
 const app = express();
 
@@ -21,7 +21,10 @@ mongoose.connect(require('./config/config.json').MongodbUrl);
 mongoose.connection.on('error', function(err) {
   logger.error(err);
   process.exit(1);
-})
+});
+
+// passport
+require('./passport/passport_main')(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

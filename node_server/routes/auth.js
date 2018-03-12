@@ -1,34 +1,23 @@
 const express = require('express');
+const passport = require('passport');
 
-const UserModel = require('../models/user'); 
-const logger = require('../logger');
+const UserModel = require('../models/user');
+const validator = require('../utils/validator');
+const logger = require('../utils/logger');
 
 const bodyPaser = require('body-parser').json();
 var router = express.Router();
 
 
-router.post('/signup', bodyPaser, function(req, res) {
-    // TODO: response with the information about whether signup was successfully
-    const body = req.body;
-    logger.info('user sign up', body);
-    if (!body.email || !body.password) {
-        res.status(400).json({ 
-            error: 'client side should specify email and password',
-            code: 100 
-        }); // temparary code
-        return;
+router.post('/signup', bodyPaser, validator,
+    passport.authenticate('local-signup'), 
+    function(req, res) {
+        // TODO: response with the information about whether signup was successfully
+        res.json({
+            message: "OK"
+        })
     }
-    new UserModel(req.body).save(function(err, product) {
-        if (err) {
-            logger.error('userModel saving error!', err);
-            res.status(400).json({
-                error: 'duplicate email',
-                code: 101
-            });
-        }
-        res.json(product);
-    });
-})
+)
 
 
 router.post('/login', bodyPaser, function(req, res) {
