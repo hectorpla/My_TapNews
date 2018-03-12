@@ -1,18 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './SignupForm.css'
 import SignupForm from './SignupForm';
-import { validateUser } from '../utils'
+import { validateUser } from '../utils';
 
 class Signup extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) { // add context for route
+        super(props, context);
         this.state = {
             email:"",
             password: "",
             confirm_password: "",
             errors: {}
         }
+        console.log(this.context.router);
     }
 
     onSubmit(e) {
@@ -60,8 +62,10 @@ class Signup extends React.Component {
                 this.setState({errors});
                 console.log('successfully signed up!!!');
                 // TODO: redirect to login
+                this.context.router.history.push('/login');
             })
             .catch(err => {
+                console.log(err);
                 errors.network = "Network Error";
                 this.setState({errors});
             })
@@ -93,16 +97,19 @@ class Signup extends React.Component {
     }
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
         return (
             <SignupForm
                 onSubmit={(e) => this.onSubmit(e)}
                 onChange={(e)=>this.onChange(e)}
                 errors={this.state.errors}
-                use={{}}
             />
         )
     }
+}
+
+Signup.contextTypes = {
+    router: PropTypes.object.isRequired
 }
 
 export default Signup;

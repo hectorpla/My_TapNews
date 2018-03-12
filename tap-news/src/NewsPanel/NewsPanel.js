@@ -1,7 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 
-import NewsCard from '../NewsCard/NewsCard'
+import NewsCard from '../NewsCard/NewsCard';
+import Auth from '../Auth/Auth';
 
 class NewsPanel extends React.Component {
     constructor(props) {
@@ -25,10 +27,34 @@ class NewsPanel extends React.Component {
     }
 
     loadMoreNews() {
+        if (!Auth.isAuthenticated()) {
+            // TODO: redirect to login page
+            this.context.router.history.replace('/login');
+            return;
+        }
+
         const url = `http://${window.location.hostname}:3000/news`;
-        const request = new Request(url, {method: 'GET'});
+        const request = new Request(url, {
+            method: 'POST',
+            headers: { // otherwise the server would not understand
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: Auth.getEmail(),
+                token: Auth.getToken()
+            })
+        });
         fetch(request)
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 200) {
+                    return res.json();
+                }
+                console.log("some error happened!", res);
+                // TODO: not authenticated or server error; redirect to login page?
+                this.context.router.history.replace('/login')
+                
+            })
             .then(new_list => {
                 this.setState({news: this.state.news == null ? 
                     new_list : this.state.news.concat(new_list)}
@@ -65,6 +91,10 @@ class NewsPanel extends React.Component {
             <div> loading... </div>
         )
     }
+}
+
+NewsPanel.contextTypes = {
+    router: PropTypes.object.isRequired
 }
 
 export default NewsPanel;

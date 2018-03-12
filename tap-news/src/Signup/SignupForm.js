@@ -13,19 +13,19 @@ function SignupForm({
           <form className="col s12">
             <div className="row title"> Sign Up </div>
             <div className="input-field row">
-              <label for="email" />
+              <label htmlFor="email" />
               <input id="email" type="text" className="validate" name="email" placeholder="email" 
                 onChange={onChange}
               />
             </div>
             { errors.email && <div className="warning row"> {errors.email} </div> }
             <div className="input-field row">
-              <label for="password"> Password </label>
+              <label htmlFor="password"> Password </label>
               <input id="password" type="password" name="password" onChange={onChange} />
             </div>
             { errors.password && <div className="warning row"> {errors.password} </div> }
             <div className="input-field row">
-              <label for="confirm_password"> Confirm Password </label>
+              <label htmlFor="confirm_password"> Confirm Password </label>
               <input id="confirm_password" name="confirm_password" type="password" onChange={onChange} />
             </div>
             { errors.auth && <div className="warning row"> Server: {errors.auth} </div> }

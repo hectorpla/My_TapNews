@@ -11,13 +11,14 @@ function LoginForm({
         <div className="sign-in-card row">
           <form className="col s12">
             <div className="row title"> Login </div>
+            {/* TODO: authen message */ }
             <div className="input-field row">
-              <label for="email" />
+              <label htmlFor="email" />
               <input id="email" type="text" name="email" className="validate" placeholder="email" 
                 onChange={onChange} />
             </div>
             <div className="input-field row">
-              <label for="password" />
+              <label htmlFor="password" />
               <input id="password" name="password" type="password" onChange={onChange} />
             </div>
             <div className="row">
