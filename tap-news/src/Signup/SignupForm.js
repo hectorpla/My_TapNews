@@ -6,7 +6,6 @@ function SignupForm({
     onSubmit,
     onChange,
     errors,
-    user
 }) {
     console.log(errors);
     return (
@@ -15,8 +14,11 @@ function SignupForm({
             <div className="row title"> Sign Up </div>
             <div className="input-field row">
               <label for="email" />
-              <input id="email" type="text" className="validate" name="email" placeholder="email" />
+              <input id="email" type="text" className="validate" name="email" placeholder="email" 
+                onChange={onChange}
+              />
             </div>
+            { errors.email && <div className="warning row"> {errors.email} </div> }
             <div className="input-field row">
               <label for="password"> Password </label>
               <input id="password" type="password" name="password" onChange={onChange} />
@@ -26,7 +28,10 @@ function SignupForm({
               <label for="confirm_password"> Confirm Password </label>
               <input id="confirm_password" name="confirm_password" type="password" onChange={onChange} />
             </div>
+            { errors.auth && <div className="warning row"> Server: {errors.auth} </div> }
+            { errors.network && <div className="warning row"> {errors.network} </div> }
             <div className="row">
+              {/* TODO: disable button if form is invalid */}
               <a className="waves-effect btn float-right" onClick={onSubmit}> 
                 Sign Up 
               </a>
@@ -45,7 +50,6 @@ SignupForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
 }
 
 export default SignupForm;
