@@ -6,8 +6,9 @@ class Auth {
 
     static isAuthenticated() {
         // TODO: check if the token and email is in the local storage
-        return localStorage.getItem('token') !== undefined
-            && localStorage.getItem('token') !== undefined;
+        // console.log('isAuthenticated', localStorage.getItem('email'));
+        return localStorage.getItem('email') !== null
+            && localStorage.getItem('token') !== null;
     }
 
     static deAuthenticate() {

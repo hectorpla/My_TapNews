@@ -72,7 +72,7 @@ class NewsPanel extends React.Component {
 
         return (
             <div className="container-fluid">
-                <div class='list-group'>
+                <div className='list-group'>
                     {news_list}
                 </div>
             </div>

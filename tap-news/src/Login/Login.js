@@ -42,24 +42,34 @@ class Login extends React.Component {
             })
         });
 
+        let errors = this.state.errors;
+        // TODO: figure out serial then and catch
         fetch(request)
             .then(res => {
                 console.log(res);
                 if (res.status === 200) {
+                    errors = {}
                     return res.json();
-                } else {
-                    const errors = this.state.errors;
+                } else if (res.status === 409) {
                     errors.auth = res.error;
-                    this.setState({ errors });
                     Auth.deAuthenticate();
+                    return;
+                } else {
+                    errors.server = 'Server Error';
+                    return this.setState({errors});
                 }
             })
             .then(res => {
                 console.log(res);
+                if (!res) { return; }
                 Auth.Authenticate(this.state.email, res.token);
                 this.setState({errors:{}})
                 // TODO: redirect to news page
                 this.context.router.history.replace('/')
+            })
+            .catch(err => { // might not neccessary network error
+                errors.network = 'Network Error';
+                this.setState({errors});
             });
     }
 
