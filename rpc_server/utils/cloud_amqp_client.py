@@ -41,6 +41,9 @@ class AMQPClient():
         if self._connection:
             self._connection.close()
 
+    def cancel_queue(self):
+        self._channel.queue_delete(self._queue_name)
+
     def send_message(self, message):
         self._channel.basic_publish(
             exchange=self.EXCHANGE,

@@ -14,7 +14,8 @@ router.post('/signup', bodyPaser, validator, function(req, res, next) {
         if (err) { return next(err); }
         if (!user) {
             info.success = false;
-            return res.status(400).json(info); // return is neccesary
+            const status_code = info.code === 100 ? 409 : 400;
+            return res.status(status_code).json(info); // return is neccesary
         }
         return res.json({ success: true, message: "you have signed up" })
     })(req, res, next);

@@ -1,5 +1,6 @@
 const path = require('path');
-const express = require('express')
+const express = require('express');
+const cors = require('cors');
 
 const index = require('./routes/index');
 const news = require('./routes/news');
@@ -8,11 +9,12 @@ const logger = require('./utils/logger');
 
 const app = express();
 
-app.all('*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-})
+// app.all('*', function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//   next();
+// })
+
 
 // DB
 const mongoose = require('mongoose');
@@ -24,6 +26,11 @@ mongoose.connection.on('error', function(err) {
 
 // passport
 require('./passport/passport_main')(app);
+
+
+// TODO: for developement purpose
+app.use(cors());
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,7 +44,6 @@ app.use('/static', express.static(path.join(__dirname, '../tap-news/build/static
 app.use('/', index);
 app.use('/news', news);
 app.use('/auth', auth);
-
 
 
 logger.info('Server has been set up.');

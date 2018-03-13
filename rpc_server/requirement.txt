@@ -1,3 +1,8 @@
 jsonrpclib-pelix
 pymongo
 pika
+requests
+redis
+lxml
+sklearn
+python-dateutil
