@@ -9,21 +9,22 @@ import news_client
 from cloud_amqp_client import AMQPClient
 from queue_cleaner import clear_queue
 
+environ = os.environ
+QUEUE_URL =  environ['scrape_task_queue_url']
+QUEUE_NAME = environ['scrape_task_queue_name']
+
 def test_monitor_basic():
     news_monitor.NEWS_SOURCES = news_client.MOCK_SOURCES
     MOCK_DATA = news_client.MOCK_DATA
 
-    queue_url = news_monitor.SCRAPE_NEWS_TASK_QUEUE_URL
-    queue_name = news_monitor.SCRAPE_NEWS_TASK_QUEUE_NAME
-
-    print('test_monitor_basic: cleaning queue "{}" first---------'.format(queue_name))
-    clear_queue(queue_url, queue_name)
+    print('test_monitor_basic: cleaning queue "{}" first---------'.format(QUEUE_NAME))
+    clear_queue(QUEUE_URL, QUEUE_NAME)
     # TODO redis server flush all
     news_monitor.redis_client.flushall()
 
 
-    print('test_monitor_basic: adding message to queue "{}"--------'.format(queue_name))
-    amqp_client = AMQPClient(queue_url, queue_name)
+    print('test_monitor_basic: adding message to queue "{}"--------'.format(QUEUE_NAME))
+    amqp_client = AMQPClient(QUEUE_URL, QUEUE_NAME)
     amqp_client.connect()
 
     proc = Process(target=news_monitor.run, name='monitor_run')

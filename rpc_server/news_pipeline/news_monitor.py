@@ -17,8 +17,9 @@ NEWS_TIME_OUT_IN_SECONDS = 3600 * 24 * 3
 REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
 
-SCRAPE_NEWS_TASK_QUEUE_URL = "amqp://luqupawr:eptVbcV4XgQDE2XgSynoplSon5n-Ymom@donkey.rmq.cloudamqp.com/luqupawr"
-SCRAPE_NEWS_TASK_QUEUE_NAME = "news_scrape_task_queue"
+environ = os.environ
+SCRAPE_NEWS_TASK_QUEUE_URL = environ['scrape_task_queue_url']
+SCRAPE_NEWS_TASK_QUEUE_NAME = environ['scrape_task_queue_name']
 
 NEWS_SOURCES = [
     'cnn'

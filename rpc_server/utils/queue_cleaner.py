@@ -1,15 +1,18 @@
+import os
+
 from cloud_amqp_client import AMQPClient
 
-QUEUE_URL = 'amqp://luqupawr:eptVbcV4XgQDE2XgSynoplSon5n-Ymom@donkey.rmq.cloudamqp.com/luqupawr'
-SCRAPE_NEWS_TASK_QUEUE_NAME = "news_scrape_task_queue"
-DEDUPE_NEWS_TASK_QUEUE_NAME = "news_dedupe_taks_queue"
+environ = os.environ
+QUEUE_URL = environ["scrape_task_queue_url"]
+SCRAPE_NEWS_TASK_QUEUE_NAME = environ["scrape_task_queue_name"]
+DEDUPE_NEWS_TASK_QUEUE_NAME = environ["dedupe_task_queue_name"]
 
 def clear_queue(queue_url, queue_name):
     count = 0
     amqp_client = AMQPClient(queue_url, queue_name)
     amqp_client.connect()
 
-    print('cleaning news')
+    print('cleaning queue "{}"'.format(queue_name))
     while True:
         message = amqp_client.get_message()
         print(message)

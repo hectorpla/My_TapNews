@@ -1,7 +1,7 @@
 import sys
 from cloud_amqp_client import AMQPClient
 
-def test():
+def test_basic():
     with open('../credentials/amqp_url.txt', 'r') as f:
         amqp_url = f.read().strip()
         # print(amqp_url + "({})".format(type(amqp_url)))
@@ -25,7 +25,7 @@ def test():
         client.cancel_queue()
 
         client.close()
-
+        print('[x] cloud amqp_client test passed')
 
 if __name__ == '__main__':
-    test()
+    test_basic()
