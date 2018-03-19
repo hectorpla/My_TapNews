@@ -44,16 +44,24 @@ class Login extends React.Component {
 
         let errors = this.state.errors;
         // TODO: figure out serial then and catch
+
+        // If you chain mutliple .then, you should always add a return
+        // at the end of their respective callbalcks. Else they will execute
+        // at the same time
+
+        // with a chain on .then if an error happens on the first one, it will
+        // skip sebsequent .then until it finds a .catch
         fetch(request)
             .then(res => {
                 console.log(res);
                 if (res.status === 200) {
                     errors = {}
                     return res.json();
-                } else if (res.status === 409) {
+                } else if (res.status === 401) {
+                    console.log('user unauthenticated');
                     errors.auth = res.error;
                     Auth.deAuthenticate();
-                    return;
+                    return this.setState({errors});
                 } else {
                     errors.server = 'Server Error';
                     return this.setState({errors});
@@ -61,7 +69,9 @@ class Login extends React.Component {
             })
             .then(res => {
                 console.log(res);
-                if (!res) { return; }
+                if (!res) { 
+                    throw Error('unexpected error');
+                }
                 Auth.Authenticate(this.state.email, res.token);
                 this.setState({errors:{}})
                 // TODO: redirect to news page

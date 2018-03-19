@@ -28,8 +28,9 @@ router.post('/login', bodyPaser, function(req, res, next) {
 
         if (err) { return next(err); }
         if (!user) {
+            logger.info('user not authencitated')
             info.success = false;
-            return res.status(400).json(info);
+            return res.status(401).json(info);
         }
         const token = user;
         req.login(token, function(loginErr) {

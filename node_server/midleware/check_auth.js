@@ -27,7 +27,7 @@ module.exports = function authenticate_with_token(req, res, next) {
                 })
                 return;
             }
-            logger.debug(`(user info) ${req.body.email} ?= ${user.email} (database info)`);
+            logger.debug(`(user info) ${req.body.email} ?= ${user && user.email} (database info)`);
             if (!user || user.email !== req.body.email) { // deleted account or mismatch
                 res.status(401).json({
                     error: "wrong user",

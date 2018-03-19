@@ -28,6 +28,7 @@ class NewsPanel extends React.Component {
 
     loadMoreNews() {
         if (!Auth.isAuthenticated()) {
+            
             // TODO: redirect to login page
             this.context.router.history.replace('/login');
             return;
@@ -35,7 +36,7 @@ class NewsPanel extends React.Component {
 
         const url = `http://${window.location.hostname}:3000/news`;
         const request = new Request(url, {
-            method: 'POST',
+            method: 'POST', // TODO: authorization bearer header
             headers: { // otherwise the server would not understand
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -52,6 +53,7 @@ class NewsPanel extends React.Component {
                 }
                 console.log("some error happened!", res);
                 // TODO: not authenticated or server error; redirect to login page?
+                Auth.deAuthenticate();
                 this.context.router.history.replace('/login')
                 
             })
