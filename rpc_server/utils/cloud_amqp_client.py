@@ -1,6 +1,8 @@
 import pika
 import json
 
+DEBUG = False
+
 class AMQPClient():
     EXCHANGE = ''
 
@@ -10,6 +12,9 @@ class AMQPClient():
 
         self._connection = None
         self._channel = None
+
+    def is_connected(self):
+        return self._channel is not None
 
     def _connect(self):
         # return pika.SelectConnection(
@@ -50,12 +55,14 @@ class AMQPClient():
             routing_key=self._queue_name,
             body=json.dumps(message)
         )
-        print("sent message '{}' to queue '{}'".format(message, self._queue_name))
+        if DEBUG:
+            print("sent message '{}' to queue '{}'".format(message, self._queue_name))
 
     def get_message(self):
         method_frame, header_frame, body = self._channel.basic_get(self._queue_name)
         if method_frame:
-            print("received message '{}' from queue '{}'".format(body, self._queue_name))
+            if DEBUG:
+                print("received message '{}' from queue '{}'".format(body, self._queue_name))
             self._channel.basic_ack(method_frame.delivery_tag)
             return json.loads(body.decode('utf-8'))
         return None
