@@ -28,7 +28,7 @@ def test_monitor_basic():
 
     proc = Process(target=news_monitor.run, name='monitor_run')
     proc.start()
-    print('test_monitor_basic: executing...')
+    print('test_monitor_basic: executing... (wait for 2 seconds to cut)')
     time.sleep(2)
 
     proc.terminate()

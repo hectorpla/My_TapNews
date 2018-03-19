@@ -2,7 +2,7 @@ from cloud_amqp_client import AMQPClient
 
 QUEUE_URL = 'amqp://luqupawr:eptVbcV4XgQDE2XgSynoplSon5n-Ymom@donkey.rmq.cloudamqp.com/luqupawr'
 SCRAPE_NEWS_TASK_QUEUE_NAME = "news_scrape_task_queue"
-DEDEPUPE_NEWS_TASK_QUEUE_NAME = ""
+DEDUPE_NEWS_TASK_QUEUE_NAME = "news_dedupe_taks_queue"
 
 def clear_queue(queue_url, queue_name):
     count = 0
@@ -23,5 +23,6 @@ def clear_queue(queue_url, queue_name):
 
 if __name__ == '__main__':
     clear_queue(QUEUE_URL, SCRAPE_NEWS_TASK_QUEUE_NAME)
+    clear_queue(QUEUE_URL, DEDUPE_NEWS_TASK_QUEUE_NAME)
 
         

@@ -45,7 +45,7 @@ def run():
             redis_client.set(digest, True)
             redis_client.expire(digest, NEWS_TIME_OUT_IN_SECONDS)
 
-            # print(news)
+            print(news)
             amqp_client.send_message(news)
 
         print('fectched {} news'.format(num_news))
