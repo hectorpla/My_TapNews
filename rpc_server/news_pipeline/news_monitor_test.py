@@ -1,6 +1,6 @@
-from multiprocessing import Process
 import time
 import os, sys
+from multiprocessing import Process
 
 import news_monitor
 
@@ -12,6 +12,7 @@ from queue_cleaner import clear_queue
 environ = os.environ
 QUEUE_URL =  environ['scrape_task_queue_url']
 QUEUE_NAME = environ['scrape_task_queue_name']
+
 
 def test_monitor_basic():
     news_monitor.NEWS_SOURCES = news_client.MOCK_SOURCES

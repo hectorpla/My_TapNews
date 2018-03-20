@@ -2,13 +2,23 @@ from pymongo import MongoClient
 
 HOST_NAME = 'localhost'
 PORT = 27017
+DB_NAME = 'my-tab-news'
 
 client = MongoClient(HOST_NAME, PORT)
 
-db = client.demo
+def get_db(db=DB_NAME):
+    return client[db]
 
-collection = db['demo-news']
 
-one_record = collection.find_one()
+def main():
+    db = client.demo
 
-print(one_record)
+    collection = db['news']
+
+    one_record = collection.find_one()
+
+    print(one_record)
+
+
+if __name__ == '__main__':
+    main()
