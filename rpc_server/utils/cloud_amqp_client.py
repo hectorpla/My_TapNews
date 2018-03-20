@@ -1,6 +1,8 @@
 import pika
 import json
 
+import config_reader
+
 DEBUG = False
 
 class AMQPClient():
@@ -69,3 +71,16 @@ class AMQPClient():
 
     def sleep(self, seconds):
         self._connection.sleep(seconds)
+
+def get_queue_client(config_file_name, url_key, name_key):
+    config = config_reader.get_config(config_file_name)
+    if config is None:
+        print('get_queue_client: config invalid!!!')
+        return
+
+    url, name = config[url_key], config[name_key]
+    queue_client = AMQPClient(url, name)
+    queue_client.connect()
+
+    assert queue_client.is_connected()
+    return queue_client

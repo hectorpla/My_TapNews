@@ -12,7 +12,7 @@ def clear_queue(queue_url, queue_name):
     amqp_client = AMQPClient(queue_url, queue_name)
     amqp_client.connect()
 
-    print('cleaning queue "{}"'.format(queue_name))
+    print('xxx cleaning queue "{}"'.format(queue_name))
     while True:
         message = amqp_client.get_message()
         if message is None:
@@ -22,7 +22,7 @@ def clear_queue(queue_url, queue_name):
     
     amqp_client.close()
     
-    print('cleaned {} message on {}'.format(count, queue_name))
+    print('xxx cleaned {} message on {}'.format(count, queue_name))
 
 def clear_all():
     clear_queue(QUEUE_URL, SCRAPE_NEWS_TASK_QUEUE_NAME)

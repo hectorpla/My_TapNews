@@ -27,7 +27,7 @@ assert dedupe_queue_client.is_connected()
 
 
 def handle_message(msg):
-    print(msg)
+    print('news fetcher getting message:', msg)
     if msg is None or not isinstance(msg, dict):
         print('news fetcher: message is broken')
         return
@@ -44,7 +44,7 @@ def handle_message(msg):
     
     aritcle = Article(task['url'])
     if not aritcle.is_valid_url():
-        print('not a valid url')
+        print('news fetcher: not a valid url')
         return
     aritcle.download()
     aritcle.parse()
@@ -62,11 +62,11 @@ def run(times=-1):
                 handle_message(msg)
             except Exception as e:
                 print(e)
-        if times > 0:
-            times -= 1
-        if times == 0:
-            break
+        # if decreas count here, weird behavior, decreasing happens before processing message
         scrape_queue_client.sleep(SLEEP_TIME_IN_SECONDS)
+        if times > 0: times -= 1
+        # print(times)
+        if times == 0: break
 
     # TODO clean up queue connection after interrupted signal
 
