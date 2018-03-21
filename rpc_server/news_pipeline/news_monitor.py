@@ -12,11 +12,9 @@ import news_client
 from cloud_amqp_client import AMQPClient
 from config_reader import get_config
 
-SLEEP_TIME_IN_SECONDS = 60
-NEWS_TIME_OUT_IN_SECONDS = 3600 * 24 * 3
-
-REDIS_HOST = 'localhost'
-REDIS_PORT = '6379'
+config = get_config('../config/config.json')
+REDIS_HOST = config['redis_host']
+REDIS_PORT = config['redis_port']
 
 config = get_config('../config/config.json')
 SCRAPE_NEWS_TASK_QUEUE_URL = config['scrape_task_queue_url']
@@ -25,6 +23,9 @@ SCRAPE_NEWS_TASK_QUEUE_NAME = config['scrape_task_queue_name']
 NEWS_SOURCES = [
     'cnn'
 ]
+
+SLEEP_TIME_IN_SECONDS = 60
+NEWS_TIME_OUT_IN_SECONDS = 3600 * 24 * 3
 
 redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
 amqp_client = AMQPClient(SCRAPE_NEWS_TASK_QUEUE_URL, 
