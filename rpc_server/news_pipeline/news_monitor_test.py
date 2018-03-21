@@ -8,12 +8,14 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
 import news_client
 from cloud_amqp_client import AMQPClient
 from queue_cleaner import clear_queue
+from config_reader import get_config
 
-environ = os.environ
-QUEUE_URL =  environ['scrape_task_queue_url']
-QUEUE_NAME = environ['scrape_task_queue_name']
+config = get_config('../config/config.json')
+QUEUE_URL =  config['scrape_task_queue_url']
+QUEUE_NAME = config['scrape_task_queue_name']
 
-
+# TODO: don't do this test after the service is online,
+# otherwise, try doing it on another queue and redis server
 def test_monitor_basic():
     news_monitor.NEWS_SOURCES = news_client.MOCK_SOURCES
     MOCK_DATA = news_client.MOCK_DATA

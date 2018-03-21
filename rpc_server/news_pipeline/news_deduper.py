@@ -10,35 +10,24 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..','utils'))
 # sys.path.append(os.path.join(os.path.dirname(__file__),'..','config')
 import mongodb_client
 from cloud_amqp_client import AMQPClient
+from config_reader import get_config
 
-DB_NAME = 'my-tab-news'
-COLLECTION_NAME = 'news'
-NEWS_SIMILARITY_THRESHOLD = 0.8
 
 # TODO: this global are bad, and makes it uncovered by tests
-DEDUPE_QUEUE_URL = None
-DEDUPE_QUEUE_NAME = None
-dedupe_queue_client = None
+config = get_config('../config/config.json')
+DB_NAME = config['news_db']
+COLLECTION_NAME = config['new_collection']
+DEDUPE_QUEUE_URL = config['dedupe_task_queue_url']
+DEDUPE_QUEUE_NAME = config['dedupe_task_queue_name']
 
 SLEEP_TIME_IN_SECONDS = 5
 
-# globally managed, consider turning the program into a class
-def init():
-    global DEDUPE_QUEUE_URL, DEDUPE_QUEUE_NAME, dedupe_queue_client
-    config = None
-    with open('../config/config.json') as f:
-        config = json.load(f)
+dedupe_queue_client = AMQPClient(DEDUPE_QUEUE_URL, DEDUPE_QUEUE_NAME)
+dedupe_queue_client.connect()
 
-    if config is None:
-        print('config invalid...')
-        return
-    DEDUPE_QUEUE_URL = config['dedupe_task_queue_url']
-    DEDUPE_QUEUE_NAME = config['dedupe_task_queue_name']
+assert dedupe_queue_client.is_connected()
 
-    dedupe_queue_client = AMQPClient(DEDUPE_QUEUE_URL, DEDUPE_QUEUE_NAME)
-    dedupe_queue_client.connect()
-
-    assert dedupe_queue_client.is_connected()
+NEWS_SIMILARITY_THRESHOLD = 0.8
 
 class NotContainPublishTimeError(Exception):
     def __str__(self):
@@ -100,7 +89,4 @@ def run(times=-1):
         if times == 0: break
 
 if __name__ == '__main__':
-    init()
     run()
-
-

@@ -10,6 +10,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
 
 import news_client
 from cloud_amqp_client import AMQPClient
+from config_reader import get_config
 
 SLEEP_TIME_IN_SECONDS = 60
 NEWS_TIME_OUT_IN_SECONDS = 3600 * 24 * 3
@@ -17,9 +18,9 @@ NEWS_TIME_OUT_IN_SECONDS = 3600 * 24 * 3
 REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
 
-environ = os.environ
-SCRAPE_NEWS_TASK_QUEUE_URL = environ['scrape_task_queue_url']
-SCRAPE_NEWS_TASK_QUEUE_NAME = environ['scrape_task_queue_name']
+config = get_config('../config/config.json')
+SCRAPE_NEWS_TASK_QUEUE_URL = config['scrape_task_queue_url']
+SCRAPE_NEWS_TASK_QUEUE_NAME = config['scrape_task_queue_name']
 
 NEWS_SOURCES = [
     'cnn'

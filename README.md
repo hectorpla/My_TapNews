@@ -17,6 +17,7 @@ This project focuses on back-end services, with necessary amount of front end bu
 + CNN architecture is utilized
 
 # Future work
++ deployment on the cloud
 + Improvement of work flow for the system with focus on maintainability
 + More complicated adjustment of recommended news list
 + Better classification with more training data

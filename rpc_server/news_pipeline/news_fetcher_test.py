@@ -8,14 +8,13 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
 import news_client
 from cloud_amqp_client import AMQPClient
 import queue_cleaner
+from config_reader import get_config
 
-
-# TODO use config file instead of envron
-environ = os.environ
-SCRAPE_QUEUE_URL = environ["scrape_task_queue_url"]
-DEDUPE_QUEUE_URL = environ["dedupe_task_queue_url"]
-SCRAPE_NEWS_TASK_QUEUE_NAME = environ["scrape_task_queue_name"]
-DEDUPE_NEWS_TASK_QUEUE_NAME = environ["dedupe_task_queue_name"]
+config = get_config('../config/config.json')
+SCRAPE_QUEUE_URL = config["scrape_task_queue_url"]
+DEDUPE_QUEUE_URL = config["dedupe_task_queue_url"]
+SCRAPE_NEWS_TASK_QUEUE_NAME = config["scrape_task_queue_name"]
+DEDUPE_NEWS_TASK_QUEUE_NAME = config["dedupe_task_queue_name"]
 
 TEST_SCRAPE_TASK = [
     'not a dict',

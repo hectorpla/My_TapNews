@@ -8,4 +8,3 @@ sklearn
 python-dateutil
 newspaper3k
 dateutil
-pickle
