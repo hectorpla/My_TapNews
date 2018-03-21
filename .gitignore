@@ -1,4 +1,7 @@
 *.log
+*.env
+
 .vscode/
+
 *package-lock.json
 
