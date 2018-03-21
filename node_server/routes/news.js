@@ -3,9 +3,9 @@ const router = express.Router();
 const bodyParser = require('body-parser').json();
 
 const check_auth = require('../midleware/check_auth');
+const rpc_clinet = require('../rpc_client/rpc_client');
 
-
-const news = [
+const mock_news = [
     {
       "source": "The Wall Street Journal",
       "title": "Berkshire Hathaway Benefits From US Tax Plan",
@@ -58,10 +58,18 @@ const news = [
     }
   ];
 
+router.get('/', check_auth, function(req, res) {
+	res.json(mock_news);
+})
+
 // TODO: check_auth temporarily put here; if there are more routes need authentication
-// put the check before all of them 
-router.post('/', bodyParser, check_auth, function(req, res) {
-     res.json(news);
+// put the check before all of them
+router.get('/userId/:userId/pageNum/:pageNum', check_auth, function(req, res) {
+	// mind that all params are intepreted as strings
+	// TODO: error handling for invalid parameters
+	rpc_clinet.get_news_by_user(req.params.userId, +req.params.pageNum, function(news_list) {
+		res.json(news_list);
+	});
 })
 
 module.exports = router;

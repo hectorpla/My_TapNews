@@ -6,7 +6,7 @@ var db;
 describe('User', function() {
 
     before(function(done) {
-        db = mongoose.connect(require('../config/config').MongodbUrl);
+        db = mongoose.connect(require('../config/config').MongodbUrlForTest);
             done();
     });
 

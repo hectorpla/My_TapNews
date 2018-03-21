@@ -12,6 +12,7 @@ import news_client
 from cloud_amqp_client import AMQPClient
 from config_reader import get_config
 
+# TODO OK to use relative path, since the program is run alone
 config = get_config('../config/config.json')
 REDIS_HOST = config['redis_host']
 REDIS_PORT = config['redis_port']

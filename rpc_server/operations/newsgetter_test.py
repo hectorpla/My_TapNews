@@ -1,12 +1,12 @@
 import sys
 import os
 
-from bson.json_util import loads
+# from bson.json_util import loads
 import redis
 sys.path.append(os.path.join(os.path.dirname(__file__),'..','utils'))
 import mongodb_client
 
-from getnews import get_news_for_user
+from newsgetter import get_news_for_user
 
 DB_NAME = 'demo'
 COLLECTION_NAME = 'news'
@@ -20,13 +20,13 @@ def test_basic():
     news_list1 = get_news_for_user(mongo_collection,
                              redis_client,
                              'test_admin', 0)
-    news_list1 = loads(news_list1)
+    # news_list1 = loads(news_list1)
     print(news_list1)
 
     news_list2 = get_news_for_user(mongo_collection,
                              redis_client,
                              'test_admin', 1)
-    news_list2 = loads(news_list2)
+    # news_list2 = loads(news_list2)
     print(news_list2)
 
     intersection = set(map(str, news_list1)) & set(map(str, news_list2))

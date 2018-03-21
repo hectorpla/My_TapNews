@@ -53,5 +53,7 @@ def get_news_for_user(mongodb_collection, redis_client, user_id, page_num):
 
     # print(news_in_page)
 
-    # dump bson
-    return json.dumps(news_in_page, default=json_util.default)
+    # dumps bson
+    result = json.loads(json.dumps(news_in_page, default=json_util.default))
+    print(type(result))
+    return result

@@ -8,7 +8,8 @@ const logger = require('../utils/logger');
 
 // TODO: add expire checking
 module.exports = function authenticate_with_token(req, res, next) {
-    const token = req.body.token;
+    const token = req.get('Authorization').split(' ')[1];
+    logger.debug(`got token: ${token}`)
     jwt.verify(token, tokenSecret, function(err, decoded) {
         if (err) {
             res.status(401).json({
@@ -27,14 +28,15 @@ module.exports = function authenticate_with_token(req, res, next) {
                 })
                 return;
             }
-            logger.debug(`(user info) ${req.body.email} ?= ${user && user.email} (database info)`);
-            if (!user || user.email !== req.body.email) { // deleted account or mismatch
+            
+            if (!user) { // deleted account
                 res.status(401).json({
-                    error: "wrong user",
+                    error: "user does not exist",
                     code: 122
                 })
                 return;
             }
+            logger.debug('authenticatipn passed')
             next();
         })
     })

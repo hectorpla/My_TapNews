@@ -8,7 +8,10 @@ import Auth from '../Auth/Auth';
 class NewsPanel extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {news : null};
+        this.state = {
+            news : null,
+            page_num: 0
+        };
     }
 
     scrollHandler() {
@@ -28,23 +31,18 @@ class NewsPanel extends React.Component {
 
     loadMoreNews() {
         if (!Auth.isAuthenticated()) {
-            
             // TODO: redirect to login page
             this.context.router.history.replace('/login');
             return;
         }
 
-        const url = `http://${window.location.hostname}:3000/news`;
-        const request = new Request(url, {
-            method: 'POST', // TODO: authorization bearer header
+        const url = `http://${window.location.hostname}:3000/news/userId/${Auth.getEmail()}/pageNum/${this.state.page_num}`;
+        const request = new Request(encodeURI(url), {
             headers: { // otherwise the server would not understand
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: Auth.getEmail(),
-                token: Auth.getToken()
-            })
+                'Authorization': 'Bearer ' + Auth.getToken()
+            }
         });
         fetch(request)
             .then(res => {
@@ -55,11 +53,12 @@ class NewsPanel extends React.Component {
                 // TODO: not authenticated or server error; redirect to login page?
                 Auth.deAuthenticate();
                 this.context.router.history.replace('/login')
-                
             })
             .then(new_list => {
-                this.setState({news: this.state.news == null ? 
-                    new_list : this.state.news.concat(new_list)}
+                this.setState({
+                    news: this.state.news == null ? new_list : this.state.news.concat(new_list),
+                    page_num: this.state.page_num + 1
+                }
             )});
     }
 
