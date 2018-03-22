@@ -12,12 +12,11 @@ import news_client
 from cloud_amqp_client import AMQPClient
 from config_reader import get_config
 
-# TODO OK to use relative path, since the program is run alone
-config = get_config('../config/config.json')
+# TODO is this the best way to address it?
+config = get_config(os.path.join(os.path.dirname(__file__),'..','config', 'config.json'))
 REDIS_HOST = config['redis_host']
 REDIS_PORT = config['redis_port']
 
-config = get_config('../config/config.json')
 SCRAPE_NEWS_TASK_QUEUE_URL = config['scrape_task_queue_url']
 SCRAPE_NEWS_TASK_QUEUE_NAME = config['scrape_task_queue_name']
 
@@ -52,7 +51,7 @@ def run():
             print(news)
             amqp_client.send_message(news)
 
-        print('fectched {} news'.format(num_news))
+        print('News Monitor: fectched {} news'.format(num_news))
         amqp_client.sleep(SLEEP_TIME_IN_SECONDS)
 
 if __name__ == '__main__':

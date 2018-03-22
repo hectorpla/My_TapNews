@@ -7,14 +7,14 @@ from dateutil import parser
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'..','utils'))
-# sys.path.append(os.path.join(os.path.dirname(__file__),'..','config')
+
 import mongodb_client
 from cloud_amqp_client import AMQPClient
 from config_reader import get_config
 
 
 # TODO: this global are bad, and makes it uncovered by tests
-config = get_config('../config/config.json')
+config = get_config(os.path.join(os.path.dirname(__file__),'..','config', 'config.json'))
 DB_NAME = config['news_db']
 COLLECTION_NAME = config['new_collection']
 DEDUPE_QUEUE_URL = config['dedupe_task_queue_url']
@@ -36,12 +36,12 @@ class NotContainPublishTimeError(Exception):
 def handle_message(msg):
     # print('dedupter handling message', msg)
     if msg is None or not isinstance(msg, dict):
-        print('news deduper: message is broken')
+        print('News Deduper: message is broken')
         return
 
     task = msg
     if 'text' not in task or not task['text']:
-        print('deduper publishedAt, not containing text')
+        print('News Deduper publishedAt, not containing text')
         return
 
     if 'publishedAt' not in task:
@@ -64,11 +64,11 @@ def handle_message(msg):
 
     tf_idf = TfidfVectorizer().fit_transform(documents)
     similarity_matrix = tf_idf * tf_idf.T
-    print('deduper', similarity_matrix)
+    print('News Deduper', similarity_matrix)
 
     num_rows = similarity_matrix.shape[0]
     if any(similarity_matrix[0, i] > NEWS_SIMILARITY_THRESHOLD for i in range(1, num_rows)):
-        print('similar document, throw it away')
+        print('News Deduper: similar document, throw it away')
         return
 
     # reformat the published date

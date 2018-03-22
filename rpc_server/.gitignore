@@ -2,4 +2,4 @@ credentials
 config
 
 *.pyc
-
+*.rdb

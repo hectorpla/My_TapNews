@@ -10,7 +10,7 @@ import news_client
 from cloud_amqp_client import AMQPClient
 from config_reader import get_config
 
-config = get_config('../config/config.json')
+config = get_config(os.path.join(os.path.dirname(__file__),'..','config', 'config.json'))
 SCRAPE_QUEUE_URL = config["scrape_task_queue_url"]
 DEDUPE_QUEUE_URL = config["dedupe_task_queue_url"]
 SCRAPE_NEWS_TASK_QUEUE_NAME = config["scrape_task_queue_name"]
@@ -28,7 +28,7 @@ assert dedupe_queue_client.is_connected()
 
 
 def handle_message(msg):
-    print('news fetcher getting message:', msg)
+    print('News Fetcher getting message:', msg)
     if msg is None or not isinstance(msg, dict):
         print('news fetcher: message is broken')
         return
@@ -52,7 +52,7 @@ def handle_message(msg):
 
     task['text'] = aritcle.text
     dedupe_queue_client.send_message(task)
-    print('message sent to dedupe queue')
+    print('News Fetcher: message sent to dedupe queue')
 
 
 def run(times=-1):
