@@ -16,9 +16,11 @@ from clickdilivery import send_click
 config = get_config(os.path.join(os.path.dirname(__file__),
                                  '..', 'config', 'config.json'))
 
+DB_NAME = config['news_db']
+COLLECTION_NAME = config['new_collection']
 # TODO: for test, change db name and collection name for real product
-DB_NAME = 'demo' # config['news_db']
-COLLECTION_NAME = 'news' # config['new_collection']
+# DB_NAME = 'demo' 
+# COLLECTION_NAME = 'news'
 REDIS_HOST = config['redis_host']
 REDIS_PORT = config['redis_port']
 

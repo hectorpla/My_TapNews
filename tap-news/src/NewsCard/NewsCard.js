@@ -7,8 +7,10 @@ class NewsCard extends React.Component {
     redirectToUrl(url, event) {
         event.preventDefault();
         console.log(`news was clicked, titled as ${this.props.news.title}`);
+
+        // mind two things: 1, start with 'http'; 2. port number (also gets through on 3001)
         let click_log_request_url = 
-            `${window.location.origin}/news/click-log/userId/${Auth.getEmail()}/newsDigest/${this.props.news.digest}`;
+            `http://${window.location.hostname}:3000/news/click-log/userId/${Auth.getEmail()}/newsDigest/${this.props.news.digest}`;
 
         console.log(click_log_request_url);
         let request = new Request(encodeURI(click_log_request_url), {
