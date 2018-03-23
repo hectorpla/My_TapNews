@@ -44,7 +44,7 @@ def handle_message(msg):
         print('News Deduper publishedAt, not containing text')
         return
 
-    if 'publishedAt' not in task:
+    if 'publishedAt' not in task or not task['publishedAt']:
         raise NotContainPublishTimeError
 
     published_at = parser.parse(task['publishedAt'])
@@ -64,7 +64,7 @@ def handle_message(msg):
 
     tf_idf = TfidfVectorizer().fit_transform(documents)
     similarity_matrix = tf_idf * tf_idf.T
-    print('News Deduper', similarity_matrix)
+    # print('News Deduper', similarity_matrix)
 
     num_rows = similarity_matrix.shape[0]
     if any(similarity_matrix[0, i] > NEWS_SIMILARITY_THRESHOLD for i in range(1, num_rows)):
@@ -83,7 +83,7 @@ def run(times=-1):
             try:
                 handle_message(msg)
             except NotContainPublishTimeError as e:
-                print(e)
+                print("News Deduper:", e)
         dedupe_queue_client.sleep(SLEEP_TIME_IN_SECONDS)
         if times > 0: times -= 1
         if times == 0: break

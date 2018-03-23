@@ -21,7 +21,12 @@ SCRAPE_NEWS_TASK_QUEUE_URL = config['scrape_task_queue_url']
 SCRAPE_NEWS_TASK_QUEUE_NAME = config['scrape_task_queue_name']
 
 NEWS_SOURCES = [
-    'cnn'
+    'cnn',
+    'bbc-sport',
+    'the-new-york-times',
+    'bloomberg',
+    'buzzfeed',
+    'nbc-news'
 ]
 
 SLEEP_TIME_IN_SECONDS = 60

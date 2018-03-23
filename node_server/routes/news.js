@@ -4,6 +4,7 @@ const bodyParser = require('body-parser').json();
 
 const check_auth = require('../midleware/check_auth');
 const rpc_clinet = require('../rpc_client/rpc_client');
+const logger = require('../utils/logger');
 
 const mock_news = [
     {
@@ -70,6 +71,16 @@ router.get('/userId/:userId/pageNum/:pageNum', check_auth, function(req, res) {
 	rpc_clinet.get_news_by_user(req.params.userId, +req.params.pageNum, function(news_list) {
 		res.json(news_list);
 	});
+})
+
+router.get('/click-log/userId/:userId/newsDigest/:newsDigest', 
+    	check_auth, function(req, res) {
+	var userId = req.params.userId, digest = req.params.newsDigest;
+	logger.debug('click happened');
+  	rpc_clinet.log_click(userId, digest, function(result) {
+		logger.debug(`user '${userId}' clicked news '${digest}' on the front'`);
+		res.status(200).end();
+	})
 })
 
 module.exports = router;

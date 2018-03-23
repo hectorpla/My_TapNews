@@ -1,10 +1,23 @@
 import './NewsCard.css';
 
 import React from 'react';
+import Auth from '../Auth/Auth';
 
 class NewsCard extends React.Component {
     redirectToUrl(url, event) {
         event.preventDefault();
+        console.log(`news was clicked, titled as ${this.props.news.title}`);
+        let click_log_request_url = 
+            `${window.location.origin}/news/click-log/userId/${Auth.getEmail()}/newsDigest/${this.props.news.digest}`;
+
+        console.log(click_log_request_url);
+        let request = new Request(encodeURI(click_log_request_url), {
+            headers: {
+                'Authorization': 'Bearer ' + Auth.getToken()
+            }
+        })
+        fetch(request)
+            .then((res) => console.log('click sent successfully'))
         window.open(url, '_blank');
     }
 

@@ -59,7 +59,8 @@ class NewsPanel extends React.Component {
                     news: this.state.news == null ? new_list : this.state.news.concat(new_list),
                     page_num: this.state.page_num + 1
                 }
-            )});
+            )})
+            .catch((err => console.error(err))); // server error could cause error
     }
 
     renderNews() {

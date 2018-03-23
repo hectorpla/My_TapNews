@@ -15,6 +15,11 @@ class AMQPClient():
         self._connection = None
         self._channel = None
 
+    def __str__(self):
+        return ('my queue name is {} and I am {} connected'
+                .format(self._queue_name, 
+                        '' if self.is_connected() else 'not'))
+
     def is_connected(self):
         return self._channel is not None
 

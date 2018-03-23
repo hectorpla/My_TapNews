@@ -22,7 +22,15 @@ function get_news_by_user(user_id, page_num, callback) {
     })
 }
 
+function log_click(user_id, news_digest, callback) {
+    client.request('log_click', [user_id, news_digest], function(err, res) {
+        if (err) { throw err; }
+        callback(res.result);
+    })
+}
+
 module.exports = {
     add,
-    get_news_by_user
+    get_news_by_user,
+    log_click
 }

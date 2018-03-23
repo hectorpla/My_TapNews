@@ -45,7 +45,7 @@ def handle_message(msg):
     
     aritcle = Article(task['url'])
     if not aritcle.is_valid_url():
-        print('news fetcher: not a valid url')
+        print('News fetcher: not a valid url')
         return
     aritcle.download()
     aritcle.parse()
