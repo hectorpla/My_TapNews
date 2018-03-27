@@ -7,7 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from config_reader import get_config
 from cloud_amqp_client import AMQPClient
 from queue_cleaner import clear_queue
-import operations
+import rpc_operations
 
 
 config = get_config(os.path.join(os.path.dirname(__file__),
@@ -24,9 +24,9 @@ TEST_CLICK_DATA = [
 def test_basic():
     # not a good idea to test, but a way I can think of seperating the queue
     # in test and production
-    operations.USER_CLICK_QUEUE_URL = USER_CLICK_QUEUE_URL
-    operations.USER_CLICK_QUEUE_NAME = USER_CLICK_QUEUE_NAME
-    operations.init()
+    rpc_operations.USER_CLICK_QUEUE_URL = USER_CLICK_QUEUE_URL
+    rpc_operations.USER_CLICK_QUEUE_NAME = USER_CLICK_QUEUE_NAME
+    rpc_operations.init()
     clickhandler.USER_CLICK_QUEUE_URL = USER_CLICK_QUEUE_URL
     clickhandler.USER_CLICK_QUEUE_NAME = USER_CLICK_QUEUE_NAME
     
@@ -35,7 +35,7 @@ def test_basic():
 
     print('Click Handler test: logging clicks...')
     for pair in TEST_CLICK_DATA:
-        operations.log_click(*pair)
+        rpc_operations.log_click(*pair)
 
     print(print('Click Handler test: handling clicks...'))
     clickhandler.run(len(TEST_CLICK_DATA))

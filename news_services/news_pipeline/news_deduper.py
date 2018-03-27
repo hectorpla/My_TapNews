@@ -2,7 +2,6 @@ import datetime
 import os
 import sys
 
-import json
 from dateutil import parser
 from sklearn.feature_extraction.text import TfidfVectorizer
 

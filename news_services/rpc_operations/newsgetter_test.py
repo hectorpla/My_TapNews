@@ -13,19 +13,25 @@ COLLECTION_NAME = 'news'
 REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
 
-mongo_collection = mongodb_client.get_db(DB_NAME).get_collection(COLLECTION_NAME)
+PREF_DB_NAME = 'pref'
+PREF_COLLECTION_NAME = 'test'
+
+news_collection = mongodb_client.get_db(DB_NAME).get_collection(COLLECTION_NAME)
+pref_collection = mongodb_client.get_db(PREF_DB_NAME).get_collection(PREF_COLLECTION_NAME)
 redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
 
 def test_basic():
-    news_list1 = get_news_for_user(mongo_collection,
+    news_list1 = get_news_for_user(news_collection,
+                             pref_collection,
                              redis_client,
                              'test_admin', 0)
     # news_list1 = loads(news_list1)
     print(news_list1)
 
-    news_list2 = get_news_for_user(mongo_collection,
-                             redis_client,
-                             'test_admin', 1)
+    news_list2 = get_news_for_user(news_collection,
+                                   pref_collection,
+                                   redis_client,
+                                   'test_admin', 1)
     # news_list2 = loads(news_list2)
     print(news_list2)
 

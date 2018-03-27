@@ -15,7 +15,8 @@ class NewsRequestMoreThanExpectedError(Exception):
     def __str__(self):
         return '{} greater than {}'.format(self.to_index, MAX_PROVIDE_SIZE - 1)
 
-def get_news_for_user(mongodb_collection, redis_client, user_id, page_num):
+def get_news_for_user(news_collection, pref_collection, 
+                      redis_client, user_id, page_num):
     from_index = page_num * NEWS_BATCH_SIZE
     to_index = (page_num + 1) * NEWS_BATCH_SIZE
 
@@ -30,7 +31,7 @@ def get_news_for_user(mongodb_collection, redis_client, user_id, page_num):
 
     if not news_digest_list_digest:
         # TODO: customize the list for different user
-        total_news = (mongodb_collection.find()
+        total_news = (news_collection.find()
                       .sort([('publishedAt', pymongo.DESCENDING)])
                       .limit(MAX_PROVIDE_SIZE))
         total_news = list(total_news)
@@ -42,14 +43,23 @@ def get_news_for_user(mongodb_collection, redis_client, user_id, page_num):
     else:
         news_digest_list = pickle.loads(news_digest_list_digest)
         selected_digests = news_digest_list[from_index:to_index]
-        news_in_page = mongodb_collection.find({'digest': {'$in': selected_digests}})
+        news_in_page = news_collection.find({'digest': {'$in': selected_digests}})
         news_in_page = list(news_in_page)
+
+    # augment news
+    recommended_category = None
+    if pref_collection:
+        pref_collection.find_one({'userId': user_id})
+        # TODO: get the prefered category
+        pass
 
     for news in news_in_page:
         if news['text']:
             del news['text']
         if news['publishedAt'] + datetime.timedelta(hours=12) < datetime.datetime.today():
             news['relativeTime'] = 'New'
+        if recommended_category and recommended_category == news['category']:
+            news['recommended'] = True
 
     # print(news_in_page)
 
