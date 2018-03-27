@@ -32,32 +32,39 @@ NEWS_SOURCES = [
 SLEEP_TIME_IN_SECONDS = 60
 NEWS_TIME_OUT_IN_SECONDS = 3600 * 24 * 3
 
-redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
-amqp_client = AMQPClient(SCRAPE_NEWS_TASK_QUEUE_URL, 
-                         SCRAPE_NEWS_TASK_QUEUE_NAME)
 
 def run():
+    redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
+    amqp_client = AMQPClient(SCRAPE_NEWS_TASK_QUEUE_URL, 
+                             SCRAPE_NEWS_TASK_QUEUE_NAME)
     amqp_client.connect()
-    while True:
-        news_list = news_client.get_news_from_sources(NEWS_SOURCES)
-        num_news = 0
 
-        for news in news_list:
-            digest = hashlib.md5(news['title'].encode('utf-8')).hexdigest()
+    try:
+        while True:
+            news_list = news_client.get_news_from_sources(NEWS_SOURCES)
+            num_news = 0
 
-            if redis_client.get(digest):
-                continue
+            for news in news_list:
+                digest = hashlib.md5(news['title'].encode('utf-8')).hexdigest()
 
-            num_news += 1
-            news['digest'] = digest
-            redis_client.set(digest, True)
-            redis_client.expire(digest, NEWS_TIME_OUT_IN_SECONDS)
+                if redis_client.get(digest):
+                    continue
 
-            print(news)
-            amqp_client.send_message(news)
+                num_news += 1
+                news['digest'] = digest
+                redis_client.set(digest, True)
+                redis_client.expire(digest, NEWS_TIME_OUT_IN_SECONDS)
 
-        print('News Monitor: fectched {} news'.format(num_news))
-        amqp_client.sleep(SLEEP_TIME_IN_SECONDS)
+                print(news)
+                amqp_client.send_message(news)
+
+            print('News Monitor: fectched {} news'.format(num_news))
+            amqp_client.sleep(SLEEP_TIME_IN_SECONDS)
+    except KeyboardInterrupt:
+        print('keyboard interrupt')
+    # except SigTerm
+    finally:
+        amqp_client.close()
 
 if __name__ == '__main__':
     run()
