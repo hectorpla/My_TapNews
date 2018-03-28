@@ -1,31 +1,41 @@
 import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__),'..','utils'))
+from config_reader import get_config
+
 from cloud_amqp_client import AMQPClient
 
+config = get_config('../config/config.json')
+
+AMQP_URL = config['new_click_queue_url']
+
 def test_basic():
-    with open('../credentials/amqp_url.txt', 'r') as f:
-        amqp_url = f.read().strip()
-        # print(amqp_url + "({})".format(type(amqp_url)))
-        client = AMQPClient(amqp_url, 'my_queue')
+    # print(amqp_url + "({})".format(type(amqp_url)))
+    client = AMQPClient(AMQP_URL, 'my_queue')
 
-        client.connect()
+    client.connect()
 
-        assert client.get_message() is None
+    assert client.is_connected()
 
-        client.send_message('hello world')
+    assert client.get_message() is None
 
-        assert client.get_message() == 'hello world'
+    client.send_message('hello world')
 
-        obj = { "hello": "world" }
-        client.send_message(obj)
+    assert client.get_message() == 'hello world'
 
-        assert client.get_message() == obj
+    obj = { "hello": "world" }
+    client.send_message(obj)
 
-        assert client.get_message() is None
 
-        client.cancel_queue()
+    assert client.get_message() == obj
 
-        client.close()
-        print('[x] cloud amqp_client test passed')
+    assert client.get_message() is None
+
+    client.cancel_queue()
+
+    client.close()
+    print('[x] cloud amqp_client test passed')
 
 if __name__ == '__main__':
     test_basic()

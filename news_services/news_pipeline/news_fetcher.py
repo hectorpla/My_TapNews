@@ -44,9 +44,10 @@ def handle_message(msg):
     # TODO do with scraper module
     
     aritcle = Article(task['url'])
-    if not aritcle.is_valid_url():
-        print('News fetcher: not a valid url')
-        return
+    # TODO: test if crash
+    # if not aritcle.is_valid_url():
+    #     print('News fetcher: not a valid url')
+    #     return
     aritcle.download()
     aritcle.parse()
 

@@ -4,9 +4,11 @@ URL = "http://localhost:6060"
 
 client = jsonrpclib.Server(URL)
 
+# TODO: extend the classfier to accept json input
+# and extract feature here
 def classify(text):
     topic = client.classify(text)
-    print("Topic: %s" % str(topic))
+    print('{} -> {}'.format(text, topic))
     return topic
 
 if __name__ == '__main__':
@@ -19,4 +21,4 @@ if __name__ == '__main__':
     ]
 
     for title in tests:
-        print('{} -> {}'.format(title, classify(title)))
+        classify(title)

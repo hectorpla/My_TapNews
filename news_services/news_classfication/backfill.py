@@ -16,7 +16,7 @@ def backfill():
 
     # a not straightforward update method
     for news in news_collection.find():
-        # 1. classify new
+        # 1. classify news
         feature_text = get_feature_text(news)
         if feature_text is None: continue
         category = classifier_client.classify(feature_text)

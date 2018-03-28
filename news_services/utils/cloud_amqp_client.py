@@ -21,7 +21,7 @@ class AMQPClient():
                         '' if self.is_connected() else 'not'))
 
     def is_connected(self):
-        return self._channel is not None
+        return self._channel.is_open
 
     def _connect(self):
         # return pika.SelectConnection(
@@ -35,8 +35,11 @@ class AMQPClient():
         return pika.BlockingConnection(params)
 
     def connect(self):
-        self._connection = self._connect()
-        self._channel = self._connection.channel()
+        # TODO: not sure it works
+        if self._connection is None or self._connection.is_closed:
+            self._connection = self._connect()
+        if self._channel is None or self._channel.is_closed:
+            self._channel = self._connection.channel()
         self._channel.queue_declare(self._queue_name)
 
     def on_open(self):

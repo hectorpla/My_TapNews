@@ -30,6 +30,7 @@ def _get_new_pref_model():
         model[cat] = init_rank
     return model
 
+
 def handle_message(msg, news_collection, pref_collection):
     # print('Click Learner: {}, type: {}'.format(msg, type(msg)))
     if msg is None:
@@ -58,6 +59,7 @@ def handle_message(msg, news_collection, pref_collection):
         pref_model[cat] *= 1 - ALPHA
     pref_model[category] += ALPHA
 
+    print('Click Learner: model for user {} changed to {}'.format(user_id, pref_model))
     pref_collection.replace_one({'userId': user_id}, pref_model, upsert=True)
     
 

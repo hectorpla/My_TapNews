@@ -6,8 +6,8 @@ from dateutil import parser
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'..','utils'))
-
 import mongodb_client
+import classifier_client
 from cloud_amqp_client import AMQPClient
 from config_reader import get_config
 
@@ -73,6 +73,11 @@ def handle_message(msg):
     # reformat the published date
     task['publishedAt'] = published_at
     # print('putting into database', task)
+
+    # TODO: feature extraction should be same in backfill procedure
+    # TODO actually should set another queue for classification
+    if 'title' in task:
+        task['category'] = classifier_client.classify(task['title'])
     news_collection.replace_one({'digest': task['digest']}, task, upsert=True)
 
 def run(times=-1):
