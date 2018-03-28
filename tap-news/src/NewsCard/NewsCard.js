@@ -33,8 +33,13 @@ class NewsCard extends React.Component {
                         </div>
                         <div className="col s6">
                             <h4> { this.props.news.title } </h4>
-                            <p className="pull-right"> { this.props.news.source } </p>
-                            <div> {this.props.news.description} </div>
+                            <div className="row">
+                                { this.props.news.category && <span className="badge yellow"> {this.props.news.category} </span> }
+                                { this.props.news.recommended && <span className="badge green"> Recommended </span> }
+                                { this.props.news.relativeTime && <span className="badge blue"> {this.props.news.relativeTime} </span> }
+                                <span> { this.props.news.source } </span>
+                            </div>
+                            <div className="row"> {this.props.news.description} </div>
                         </div>
                     </div>
             </div>

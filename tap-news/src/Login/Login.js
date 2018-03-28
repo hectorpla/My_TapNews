@@ -4,6 +4,16 @@ import PropTypes from 'prop-types';
 import LoginForm from './LoginForm';
 import Auth from '../Auth/Auth';
 
+// check if an object is empty
+// https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+function isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            return false;
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+}
 
 class Login extends React.Component {
     constructor(props) {
@@ -42,7 +52,7 @@ class Login extends React.Component {
             })
         });
 
-        let errors = this.state.errors;
+        let errors = this.state.errors; 
         // TODO: figure out serial then and catch
 
         // If you chain mutliple .then, you should always add a return
@@ -56,21 +66,37 @@ class Login extends React.Component {
                 console.log(res);
                 if (res.status === 200) {
                     errors = {}
-                    return res.json();
+                } else if (res.status < 400) {
+                    // unexpected
+                    return null;
                 } else if (res.status === 401) {
-                    console.log('user unauthenticated');
-                    errors.auth = res.error;
+                    console.log('user unauthenticated!!!');
+                    errors.auth = null;
                     Auth.deAuthenticate();
-                    return this.setState({errors});
+                } else if (res.status < 500) {
+                    // unexpected
+                    return null;
                 } else {
-                    errors.server = 'Server Error';
-                    return this.setState({errors});
+                    errors.server = null;
                 }
+                return res.json();
             })
             .then(res => {
-                console.log(res);
+                console.log(res, errors);
                 if (!res) { 
-                    throw Error('unexpected error');
+                    errors.server = 'unexpected error (temporary error category)'
+                    this.setState({errors});
+                    return;
+                }
+                if (!isEmpty(errors)) {
+                    if (errors.auth !== undefined) {
+                        errors.auth = res.error;
+                    }
+                    if (errors.server !== undefined) {
+                        errors.server = res.error;
+                    }
+                    this.setState({errors}); 
+                    return;
                 }
                 Auth.Authenticate(this.state.email, res.token);
                 this.setState({errors:{}})
