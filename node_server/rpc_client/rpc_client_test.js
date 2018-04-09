@@ -22,7 +22,7 @@ function test_log_click() {
     })
 }
 
-console.log('rpc')
+console.log('testing RPC client -----')
 test_add();
 test_get_news();
 test_log_click();

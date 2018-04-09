@@ -1,9 +1,11 @@
 const jayson = require('jayson');
 const logger = require('../utils/logger');
 
+const config = require('../config/config.json')
+
 const client = jayson.client.http({
-    host: 'localhost',
-    port: 4040
+    host: config.RPCHost,
+    port: config.RPCPort
 })
 
 function add(lhs, rhs, callback) {
