@@ -60,6 +60,7 @@ const mock_news = [
   ];
 
 router.get('/', check_auth, function(req, res) {
+  logger.debug('request on /news')
 	res.json(mock_news);
 })
 
@@ -68,19 +69,36 @@ router.get('/', check_auth, function(req, res) {
 router.get('/userId/:userId/pageNum/:pageNum', check_auth, function(req, res) {
 	// mind that all params are intepreted as strings
 	// TODO: error handling for invalid parameters
-	rpc_clinet.get_news_by_user(req.params.userId, +req.params.pageNum, function(news_list) {
-		res.json(news_list);
-	});
+    rpc_clinet.get_news_by_user(req.params.userId, +req.params.pageNum, 
+        function(news_list) {
+            res.json(news_list);
+        },
+        function(err) {
+            res.status(500).json({
+                success: false,
+                error: "Web Server failed to fetch news"
+            });
+        }
+    );
 })
 
-router.get('/click-log/userId/:userId/newsDigest/:newsDigest', 
-    	check_auth, function(req, res) {
-	var userId = req.params.userId, digest = req.params.newsDigest;
-	logger.debug('click happened');
-  	rpc_clinet.log_click(userId, digest, function(result) {
-		logger.debug(`user '${userId}' clicked news '${digest}' on the front'`);
-		res.status(200).end();
-	})
-})
+router.get('/click-log/userId/:userId/newsDigest/:newsDigest', check_auth, 
+    function(req, res) {
+        var userId = req.params.userId, digest = req.params.newsDigest;
+        logger.debug('click happened');
+        rpc_clinet.log_click(userId, digest, 
+            function(result) {
+                logger.debug(`user '${userId}' clicked news '${digest}' on the front'`);
+                res.status(200).end();
+            },
+            function(err) {
+                res.status(500).json({
+                    success: false,
+                    error: "Web Server failed deliver click log"
+                });
+            }
+        );
+    }
+)
 
 module.exports = router;

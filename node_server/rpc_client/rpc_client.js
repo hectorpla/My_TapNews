@@ -15,9 +15,13 @@ function add(lhs, rhs, callback) {
     })
 }
 
-function get_news_by_user(user_id, page_num, callback) {
+function get_news_by_user(user_id, page_num, callback, error_callback) {
     client.request('get_news_by_user', [user_id, page_num], function(err, res) {
-        if (err) { throw err; }
+        if (err) {
+            logger.error(err);
+            if (error_callback) { error_callback(err); }
+            return;
+        }
         // logger.debug(typeof res.result);
         // logger.debug(res.result);
         callback(res.result);
@@ -26,7 +30,11 @@ function get_news_by_user(user_id, page_num, callback) {
 
 function log_click(user_id, news_digest, callback) {
     client.request('log_click', [user_id, news_digest], function(err, res) {
-        if (err) { throw err; }
+        if (err) { 
+            logger.error(err);
+            if (error_callback) { error_callback(err); }
+            return;
+        }
         callback(res.result);
     })
 }
