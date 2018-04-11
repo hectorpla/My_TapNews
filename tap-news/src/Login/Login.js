@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import LoginForm from './LoginForm';
 import Auth from '../Auth/Auth';
 
+import { PORT } from '../globals';
+
 // check if an object is empty
 // https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
 function isEmpty(obj) {
@@ -39,7 +41,7 @@ class Login extends React.Component {
         // TODO: add validator for email
 
         // login logic
-        const url = `http://${window.location.hostname}:3000/auth/login`;
+        const url = `http://${window.location.hostname}:${PORT}/auth/login`;
         const request = new Request(url, {
             method: 'POST',
             headers: {

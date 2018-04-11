@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import NewsCard from '../NewsCard/NewsCard';
 import Auth from '../Auth/Auth';
 
+import { PORT } from '../globals';
+
 class NewsPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -36,7 +38,7 @@ class NewsPanel extends React.Component {
             return;
         }
 
-        const url = `http://${window.location.hostname}:3000/news/userId/${Auth.getEmail()}/pageNum/${this.state.page_num}`;
+        const url = `http://${window.location.hostname}:${PORT}/news/userId/${Auth.getEmail()}/pageNum/${this.state.page_num}`;
         const request = new Request(encodeURI(url), {
             headers: { // otherwise the server would not understand
                 'Accept': 'application/json',
@@ -49,10 +51,18 @@ class NewsPanel extends React.Component {
                 if (res.status === 200) {
                     return res.json();
                 }
-                console.log("some error happened!", res);
-                // TODO: not authenticated or server error; redirect to login page?
-                Auth.deAuthenticate();
-                this.context.router.history.replace('/login')
+
+                // TODO: not authenticated; redirect to login page?
+                if (res.status === 401) {
+                    Auth.deAuthenticate();
+                    this.context.router.history.replace('/login');
+                    throw Error('user not authenticated')
+                }
+                if (res.status === 500) {
+                    // TODO: server might send back some error info, but not take it here
+                    throw Error('Fetching news: server error!');
+                }
+                throw Error('Fetching news: other error!')
             })
             .then(new_list => {
                 this.setState({
@@ -60,7 +70,7 @@ class NewsPanel extends React.Component {
                     page_num: this.state.page_num + 1
                 }
             )})
-            .catch((err => console.error(err))); // server error could cause error
+            .catch((err => console.error(err))); // server error
     }
 
     renderNews() {
