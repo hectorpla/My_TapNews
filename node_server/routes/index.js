@@ -3,7 +3,8 @@ var router = express.Router();
 var path = require('path');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+// fix: make it work for front end routing
+router.use(function(req, res, next) {
   res.sendFile('index.html', { root: path.join(__dirname, '../../tap-news/build/') })
 });
 

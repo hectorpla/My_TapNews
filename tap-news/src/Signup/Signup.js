@@ -19,6 +19,8 @@ class Signup extends React.Component {
         console.log(this.context.router);
     }
 
+    // TODO: found bug about input: what is shown != what is got
+    // add tests
     onSubmit(e) {
         const email = this.state.email;
         const password = this.state.password;
@@ -36,7 +38,8 @@ class Signup extends React.Component {
         // alert(JSON.stringify(this.state));
 
         // TODO: POST credential info to the server
-        const url = `http://${window.location.hostname}:${PORT}/auth/signup`;
+        // const url = `https://${window.location.hostname}:${PORT}/auth/signup`;
+        const url = `${window.location.origin}/auth/signup`;
         const request = new Request(url, {
             method: 'POST',
             headers: { // otherwise the server would not understand
@@ -63,6 +66,7 @@ class Signup extends React.Component {
                 }
                 this.setState({errors});
                 console.log('successfully signed up!!!');
+                alert('successfully signed up!!!')
                 // TODO: redirect to login
                 this.context.router.history.push('/login');
             })

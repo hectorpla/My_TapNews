@@ -9,19 +9,20 @@ const logger = require('./utils/logger');
 
 const app = express();
 
-// app.all('*', function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//   next();
-// })
-
+if (process.env.MongodbUrl === undefined || process.env.tokenSecret === undefined) {
+    logger.error('Please specify "MongodbUrl" and "tokenSecret" in environment');
+    process.exit(2);
+}
 
 // DB
 const mongoose = require('mongoose');
-mongoose.connect(require('./config/config.json').MongodbUrl);
+const MongodbUrl = process.env.MongodbUrl;
+
+// logger.debug(MongodbUrl)
+mongoose.connect(MongodbUrl);
 mongoose.connection.on('error', function(err) {
-  logger.error(err);
-  process.exit(1);
+    logger.error(err);
+    process.exit(1);
 });
 
 // passport
@@ -41,10 +42,9 @@ app.set('view engine', 'jade');
 // app.use(logger('dev'));
 app.use('/static', express.static(path.join(__dirname, '../tap-news/build/static/')));
 
-app.use('/', index);
 app.use('/news', news);
 app.use('/auth', auth);
-
+app.use(index);
 
 logger.info('Server has been set up.');
 // logger.debug('a debug message')

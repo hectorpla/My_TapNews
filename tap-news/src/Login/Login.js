@@ -41,7 +41,8 @@ class Login extends React.Component {
         // TODO: add validator for email
 
         // login logic
-        const url = `http://${window.location.hostname}:${PORT}/auth/login`;
+        // const url = `https://${window.location.hostname}:${PORT}/auth/login`;
+        const url = `${window.location.origin}/auth/login`
         const request = new Request(url, {
             method: 'POST',
             headers: {

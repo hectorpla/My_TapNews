@@ -38,7 +38,9 @@ class NewsPanel extends React.Component {
             return;
         }
 
-        const url = `http://${window.location.hostname}:${PORT}/news/userId/${Auth.getEmail()}/pageNum/${this.state.page_num}`;
+        // const url = `https://${window.location.hostname}:${PORT}/news/userId/${Auth.getEmail()}/pageNum/${this.state.page_num}`;
+        const url = `${window.location.origin}/news/userId/${Auth.getEmail()}/pageNum/${this.state.page_num}`;
+
         const request = new Request(encodeURI(url), {
             headers: { // otherwise the server would not understand
                 'Accept': 'application/json',
