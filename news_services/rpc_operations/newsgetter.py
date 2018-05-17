@@ -79,7 +79,7 @@ def get_news_for_user(news_collection, pref_collection,
     for news in news_in_page:
         if news['text']:
             del news['text']
-        if news['publishedAt'] + datetime.timedelta(hours=12) < datetime.datetime.today():
+        if news['publishedAt'] + datetime.timedelta(hours=12) >= datetime.datetime.today():
             news['relativeTime'] = 'New'
         if 'category' in news and news['category'] in recommended_categories:
             news['recommended'] = True

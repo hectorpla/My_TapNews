@@ -1,0 +1,8 @@
+jsonrpclib-pelix==0.3.1
+pika==0.11.2
+requests
+redis
+lxml
+sklearn
+python-dateutil
+newspaper3k

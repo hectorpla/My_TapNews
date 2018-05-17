@@ -77,7 +77,10 @@ def handle_message(msg):
     # TODO: feature extraction should be same in backfill procedure
     # TODO actually should set another queue for classification
     if 'title' in task:
-        task['category'] = classifier_client.classify(task['title'])
+        try:
+            task['category'] = classifier_client.classify(task['title'])
+        except Exception as e:
+            print("News Deduper: failed to classify using the classifier client", e)
     news_collection.replace_one({'digest': task['digest']}, task, upsert=True)
 
 def run(times=-1):
