@@ -1,3 +1,6 @@
+# Deployment
+Please try out on http://zhpnl-tap-news-web.herokuapp.com/ and have fun
+
 # At the begining
 This project focuses on back-end services, with necessary amount of front end built by React.js
 
