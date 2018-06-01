@@ -6,7 +6,9 @@ const tokenSecret = require('../config/config').tokenSecret;
 
 const logger = require('../utils/logger');
 
-// TODO: add expire checking
+// TODO: 
+// for test: separate the jwt and mongodb dependencies
+// functionally: add expire checking
 module.exports = function authenticate_with_token(req, res, next) {
     // should take care of the authorization
     const authInfo = req.get('Authorization')
@@ -23,13 +25,14 @@ module.exports = function authenticate_with_token(req, res, next) {
     logger.debug(`got token: ${token}`)
     jwt.verify(token, tokenSecret, function(err, decoded) {
         if (err) {
+            logger.debug('token verify: error happened')
             res.status(401).json({
                 error: 'failed to authenticate token',
                 code: 121
             });
             return;
         }
-        logger.verbose('user pay load', decoded);
+        logger.debug('user pay load', decoded);
         UserModel.findOne({ _id: decoded.id }, function(err, user) {
             if (err) {
                 logger.error(err);
