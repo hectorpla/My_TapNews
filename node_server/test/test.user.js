@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var User = require("../models/user");
 var db;
 
-describe('User', function() {
+describe('User Model MongoDB test', function() {
 
     before(function(done) {
         db = mongoose.connect(require('../config/config').MongodbUrlForTest);
@@ -22,8 +22,8 @@ describe('User', function() {
         });
 
         user.save(function(error) {
-            if (error) console.log('error' + error.message);
-            else console.log('no error');
+            // if (error) console.log('error' + error.message);
+            // else console.log('no error');
             done();
         });
     });
@@ -31,7 +31,6 @@ describe('User', function() {
     it('find a user by username', function(done) {
         User.findOne({ email: '12345@123.com' }, function(err, user) {
             user.email.should.eql('12345@123.com');
-            console.log("   email: ", user.email);
             done();
         });
     });
