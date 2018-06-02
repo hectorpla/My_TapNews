@@ -22,6 +22,7 @@ userSchema.methods.comparePassword = function(password) {
 
 
 // ERROR HANDLING: http://mongoosejs.com/docs/2.7.x/docs/middleware.html
+// TODO: test the pre-save function in integration test
 userSchema.pre('save', function(next) {
     // TODO: add salt and hash the password using bcrypt, replace
     const user = this;

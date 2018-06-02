@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "make test"
+    "go": "node -r ./config/preload.js ./bin/www",
+    "test": "make test",
+    "test:unit": "./node_modules/.bin/mocha ./test/unit",
+    "test:int": "./node_modules/.bin/mocha ./test/int"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
@@ -13,6 +16,7 @@
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "~2.6.9",
+    "dotenv": "^6.0.0",
     "eslint": "^4.19.1",
     "express": "^4.15.5",
     "jade": "~1.11.0",

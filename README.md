@@ -19,8 +19,13 @@ This project focuses on back-end services, with necessary amount of front end bu
 + A supervised approach is taken
 + CNN architecture is utilized
 
+# Dev/Ops
++ Better to have one code base (currently having two: master branch for github reference, another for heroku deployment)
++ Add jenkins to automate the dev/op cycle
++ Tests (unit tests and integration test)
+
 # Future work
-+ deployment on the cloud
 + Improvement of work flow for the system with focus on maintainability
 + More complicated adjustment of recommended news list
 + Better classification with more training data
+

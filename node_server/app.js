@@ -19,11 +19,11 @@ const mongoose = require('mongoose');
 const MongodbUrl = process.env.MongodbUrl;
 
 // logger.debug(MongodbUrl)
-mongoose.connect(MongodbUrl);
 mongoose.connection.on('error', function(err) {
     logger.error(err);
     process.exit(1);
 });
+mongoose.connect(MongodbUrl);
 
 // passport
 require('./passport/passport_main')(app);

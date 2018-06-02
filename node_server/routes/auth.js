@@ -8,6 +8,11 @@ const logger = require('../utils/logger');
 const bodyPaser = require('body-parser').json();
 var router = express.Router();
 
+// const printer = function(req, res, next) {
+//     logger.debug(req.method, req.body);
+//     next();
+// }
+
 // customized passport error handling
 router.post('/signup', bodyPaser, validator, function(req, res, next) {
     passport.authenticate('local-signup', function(err, user, info) {
