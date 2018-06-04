@@ -10,6 +10,8 @@ const host = `http://localhost:${process.env.PORT}`;
 
 // use this test to make the server easier to test (replacing postman)
 describe("Auth API", () => {
+    const loginUrl = `${host}/auth/login`;
+
     let SOME_EMAIL = "some@email.com";
     let SOME_PASSWORD = "password";
     const REQUEST_HEADERS = {
@@ -29,11 +31,25 @@ describe("Auth API", () => {
         mongoose.disconnect();
     })
 
-    describe("Sign-up normal", () => {
+    describe("Log-in rejection handling", () => {
+        const randomEmail = "randd";
+        const randomPassword = "dfd"
+
+        it("given random email and passowrd, should fail with code 401", (done) => {
+            body = { email: randomEmail, password:randomPassword }
+            request.post(loginUrl, {body, json: true}, (err, httpResponse, body) => {
+                expect(err).to.be.null;
+                expect(httpResponse.statusCode).to.equal(401);
+                expect(body.success).to.be.false;
+                done();
+            })
+        })
+    })
+
+    describe("Sign-up, Log-in work flow", () => {
         const signupUrl = `${host}/auth/signup`;
 
         after(() => {
-            // TODO: delete db doc
             userModel.deleteOne({email: SOME_EMAIL}, err => {
                 if (err) {
                     console.log('deleting db doc: error ->', err);
@@ -46,15 +62,17 @@ describe("Auth API", () => {
             request.post(signupUrl, {body: body, json: true}, (err, httpResponse, body) =>{
                 expect(err).to.be.null;
                 expect(httpResponse.statusCode).to.equal(200);
+                expect(body.success).to.be.true;
                 done();
             })
         })
 
         it("given same info, should fail with status 409 (conflict)", (done) => {
             let body = {email: SOME_EMAIL, password: SOME_PASSWORD};
-            request.post(signupUrl, {body: body, json: true}, (err, httpResponse, body) =>{
+            request.post(signupUrl, {body: body, json: true}, (err, httpResponse, body) => {
                 expect(err).to.be.null;
                 expect(httpResponse.statusCode).to.equal(409);
+                expect(body.success).to.be.false;
                 done();
             })
         })
@@ -66,6 +84,17 @@ describe("Auth API", () => {
                 expect(user.password).to.not.be.equal(SOME_PASSWORD);
                 done();
             });
+        })
+
+        it("should be able to login with the same account", (done) => {
+            let body = {email: SOME_EMAIL, password: SOME_PASSWORD}
+            request.post(loginUrl, {body: body, json: true}, (err, httpResponse, body) => {
+                expect(err).to.be.null;
+                expect(httpResponse.statusCode).to.equal(200);
+                expect(body.success).to.be.true;
+                expect(body.token).to.be.not.null;
+                done();
+            })
         })
     })
 
