@@ -30,7 +30,7 @@ router.post('/signup', bodyPaser, validator, function(req, res, next) {
 
 router.post('/login', bodyPaser, function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info) {
-        logger.verbose('user loging in', req.body, req.user);
+        logger.verbose('user loging in', req.body, user);
 
         if (err) { return next(err); }
         if (!user) {

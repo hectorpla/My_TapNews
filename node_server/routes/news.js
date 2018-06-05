@@ -59,7 +59,7 @@ const mock_news = [
     }
   ];
 
-router.get('/', check_auth, function(req, res) {
+router.get('/mock', check_auth, function(req, res) {
   logger.debug('request on /news')
 	res.json(mock_news);
 })
