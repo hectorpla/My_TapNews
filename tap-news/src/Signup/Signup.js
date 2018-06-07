@@ -5,8 +5,6 @@ import './SignupForm.css'
 import SignupForm from './SignupForm';
 import { validateUser } from '../utils';
 
-import { PORT } from '../globals';
-
 class Signup extends React.Component {
     constructor(props, context) { // add context for route
         super(props, context);
@@ -26,7 +24,6 @@ class Signup extends React.Component {
         const password = this.state.password;
         const errors = this.state.errors;
 
-        // TODO: add validator for email
         try {
             validateUser({email, password});
         } catch(error) {
@@ -37,8 +34,6 @@ class Signup extends React.Component {
 
         // alert(JSON.stringify(this.state));
 
-        // TODO: POST credential info to the server
-        // const url = `https://${window.location.hostname}:${PORT}/auth/signup`;
         const url = `${window.location.origin}/auth/signup`;
         const request = new Request(url, {
             method: 'POST',

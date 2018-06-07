@@ -3,8 +3,6 @@ import './NewsCard.css';
 import React from 'react';
 import Auth from '../Auth/Auth';
 
-import { PORT } from '../globals';
-
 class NewsCard extends React.Component {
     redirectToUrl(url, event) {
         event.preventDefault();
@@ -12,9 +10,6 @@ class NewsCard extends React.Component {
 
         // TODO: mind two things: 1, start with 'http'; 2. port number (also gets through on 3001)
         
-        // const click_log_request_url = 
-        //     `https://${window.location.hostname}:${PORT}/news/click-log/userId/${Auth.getEmail()}/newsDigest/${this.props.news.digest}`;
-
         const click_log_request_url = 
             `${window.location.origin}/news/click-log/userId/${Auth.getEmail()}/newsDigest/${this.props.news.digest}`;
         console.log(click_log_request_url);

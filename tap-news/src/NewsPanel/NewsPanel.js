@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import NewsCard from '../NewsCard/NewsCard';
 import Auth from '../Auth/Auth';
 
-import { PORT } from '../globals';
-
 class NewsPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -38,7 +36,6 @@ class NewsPanel extends React.Component {
             return;
         }
 
-        // const url = `https://${window.location.hostname}:${PORT}/news/userId/${Auth.getEmail()}/pageNum/${this.state.page_num}`;
         const url = `${window.location.origin}/news/userId/${Auth.getEmail()}/pageNum/${this.state.page_num}`;
 
         const request = new Request(encodeURI(url), {

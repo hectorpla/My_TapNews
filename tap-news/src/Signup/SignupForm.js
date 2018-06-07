@@ -13,8 +13,8 @@ function SignupForm({
           <form className="col s12">
             <div className="row title"> Sign Up </div>
             <div className="input-field row">
-              <label htmlFor="email" />
-              <input id="email" type="text" className="validate" name="email" placeholder="email" 
+              <label htmlFor="email"> Email </label>
+              <input id="email" type="text" className="validate" name="email" 
                 onChange={onChange}
               />
             </div>

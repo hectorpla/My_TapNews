@@ -16,12 +16,12 @@ function LoginForm({
             { errors.server && <div className="warning row"> {errors.server} </div> }
             { errors.network && <div className="warning row"> {errors.network} </div> }
             <div className="input-field row">
-              <label htmlFor="email" />
-              <input id="email" type="text" name="email" className="validate" placeholder="email" 
+              <label htmlFor="email"> Email </label>
+              <input id="email" type="text" name="email" className="validate" 
                 onChange={onChange} />
             </div>
             <div className="input-field row">
-              <label htmlFor="password" />
+              <label htmlFor="password"> Password </label>
               <input id="password" name="password" type="password" onChange={onChange} />
             </div>
             <div className="row">
