@@ -24,6 +24,9 @@ This project focuses on back-end services, with necessary amount of front end bu
 + Add jenkins to automate the dev/op cycle
 + Tests (unit tests and integration test)
 
+# About heroku
++ package.json in the root directory is a link to that in node_server/
+
 # Future work
 + Improvement of work flow for the system with focus on maintainability
 + More complicated adjustment of recommended news list

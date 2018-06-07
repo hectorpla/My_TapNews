@@ -1,11 +1,13 @@
 const jayson = require('jayson');
 const logger = require('../utils/logger');
 
-const config = require('../config/config.json')
+const env = process.env;
+const port = env.RPCPort || 80;
 
+logger.debug('rpc client:', env.RPCHost, port);
 const client = jayson.client.http({
-    host: config.RPCHost,
-    port: config.RPCPort
+    host: env.RPCHost,
+    port: port
 })
 
 function add(lhs, rhs, callback) {

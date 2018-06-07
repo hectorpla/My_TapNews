@@ -2,7 +2,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const jwt = require('jsonwebtoken');
 
 const UserModel = require('../models/user');
-const tokenSecret = require('../config/config').tokenSecret;
+const tokenSecret = process.env.tokenSecret;
 
 const logger = require('../utils/logger');
 
